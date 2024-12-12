@@ -5,6 +5,8 @@ import org.json.simple.parser.JSONParser;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class WeatherApp {
@@ -14,9 +16,53 @@ public class WeatherApp {
         //Get location via geolocation API
         JSONArray locationData = getLocationData(locationName);
 
+        //Get latitude and longitude data
+        JSONObject location = (JSONObject) locationData.get(0);
+        double latitude = (Double) location.get("latitude");
+        double longitude = (Double) location.get("longitude");
+
+        //Build the API request using the location values
+        String urlString = "https://api.open-meteo.com/v1/forecast?" +
+                "latitude=" + latitude + "&longitude=" + longitude +
+                "&hourly=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch";
+
+        try {
+            //Call the API for response
+            HttpURLConnection conn = getAPIResponse(urlString);
+            //Check the response status
+            if(conn.getResponseCode() != 200){
+                System.out.println("Error: Could not connect to API");
+                return null;
+            }
+            //Store JSON data
+            StringBuilder JsonResult = new StringBuilder();
+            Scanner scnr = new Scanner(conn.getInputStream());
+            while (scnr.hasNext()){
+                //Read and store the data into the StringBuilder
+                JsonResult.append(scnr.nextLine());
+            }
+
+            scnr.close();
+            conn.disconnect();
+
+            //Parse the data
+            JSONParser parser = new JSONParser();
+            JSONObject resultJsonObj = (JSONObject) parser.parse(String.valueOf(JsonResult));
+
+            //Get hourly weather data
+            JSONObject hourly = (JSONObject) resultJsonObj.get("hourly");
+            //Get index of current hour
+            JSONArray time = (JSONArray) hourly.get("time");
+            int index = findIndexOfCurrentTime(time);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
     }//end getWeatherData method
 
-    private static JSONArray getLocationData(String locationName){
+    public static JSONArray getLocationData(String locationName){
         //Replaces spaces with "+" in order to follow the API's format
         locationName = locationName.replaceAll(" ", "+");
 
@@ -56,6 +102,8 @@ public class WeatherApp {
         }catch(Exception e){
             e.printStackTrace();
         }
+        //Location couldn't be found
+        return null;
     }//end getLocationData method
 
     private static HttpURLConnection getAPIResponse(String urlString){
@@ -73,7 +121,34 @@ public class WeatherApp {
             e.printStackTrace();
         }
 
-        //Returns null if connection could not not be made
+        //Returns null if connection could not be made
         return null;
     }//end getAPIResponse method
+
+    private static int findIndexOfCurrentTime(JSONArray timeList){
+
+        String currentTime = getCurrentTime();
+
+        //Iterate through the time list from the API until you get the matched current time
+        for(int i = 0; i < timeList.size(); i++){
+            String time = (String) timeList.get(i);
+            if(time.equalsIgnoreCase(currentTime)){
+                return i;
+            }
+        }
+
+        return 0;
+    }//end findIndexOfCurrentTime method
+
+    public static String getCurrentTime(){
+        //Get current date and time
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        //Format date to what is needed from API
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH':00'");
+        //Format and print the date and time
+        String formattedDateTime = currentDateTime.format(formatter);
+        return formattedDateTime;
+
+    }
 }//end WeatherApp class
