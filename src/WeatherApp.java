@@ -55,6 +55,16 @@ public class WeatherApp {
             JSONArray time = (JSONArray) hourly.get("time");
             int index = findIndexOfCurrentTime(time);
 
+            //Get temperature
+            JSONArray temperatureData = (JSONArray) hourly.get("temperature_2m");
+            double temperature = (double) temperatureData.get(index);
+
+            //Get the weather code
+            JSONArray weathercode = (JSONArray) hourly.get("weathercode");
+            String weatherCondition = convertWeatherCode((long) weathercode.get(index));
+
+
+
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -149,6 +159,11 @@ public class WeatherApp {
         //Format and print the date and time
         String formattedDateTime = currentDateTime.format(formatter);
         return formattedDateTime;
+
+    }
+
+    //Convert the weather code to something readable
+    private static String convertWeatherCode(long weathercode){
 
     }
 }//end WeatherApp class
