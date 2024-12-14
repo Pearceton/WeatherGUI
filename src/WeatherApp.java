@@ -60,10 +60,25 @@ public class WeatherApp {
             double temperature = (double) temperatureData.get(index);
 
             //Get the weather code
-            JSONArray weathercode = (JSONArray) hourly.get("weathercode");
-            String weatherCondition = convertWeatherCode((long) weathercode.get(index));
+            JSONArray weather_code = (JSONArray) hourly.get("weathercode");
+            String weatherCondition = convertWeatherCode((long) weather_code.get(index));
 
+            //Get humidity
+            JSONArray relativeHumidity = (JSONArray) hourly.get("relativehumidity_2m");
+            long humidity = (long) relativeHumidity.get(index);
 
+            //Get windspeed
+            JSONArray windspeedData = (JSONArray) hourly.get("windspeed_10m");
+            double windspeed = (double) windspeedData.get(index);
+
+            //Weather object that will be accessed in frontend
+            JSONObject weatherData = new JSONObject();
+            weatherData.put("temperature", temperature);
+            weatherData.put("weather_condition", weatherCondition);
+            weatherData.put("humidity", humidity);
+            weatherData.put("windspeed", windspeed);
+
+            return weatherData;
 
         }catch(Exception e){
             e.printStackTrace();
@@ -164,6 +179,21 @@ public class WeatherApp {
 
     //Convert the weather code to something readable
     private static String convertWeatherCode(long weathercode){
+        String weatherCondition = "";
+        if(weathercode == 0L){
+            //Clear
+            weatherCondition = "Clear";
+        }else if(weathercode <= 3L && weathercode > 0L){
+            //Cloudy
+            weatherCondition = "Cloudy";
+        }else if((weathercode >= 51L && weathercode <= 67L) ||  (weathercode >= 80L && weathercode <= 99L)){
+            //Rain
+            weatherCondition = "Rain";
+        }else if(weathercode >= 71L && weathercode <= 77L){
+            //Snow
+            weatherCondition = "Snow";
+        }
 
-    }
+        return weatherCondition;
+    }//end convertWeatherCode method
 }//end WeatherApp class
