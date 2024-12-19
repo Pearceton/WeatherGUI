@@ -7,9 +7,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class WeatherApp {
+
+    public static String temperatureUnit = "fahrenheit";
 
     //Get weather data for location given
     public static JSONObject getWeatherData(String locationName){
@@ -21,10 +24,13 @@ public class WeatherApp {
         double latitude = (Double) location.get("latitude");
         double longitude = (Double) location.get("longitude");
 
+        String temperatureUnit = WeatherApp.temperatureUnit;
+
         //Build the API request using the location values
         String urlString = "https://api.open-meteo.com/v1/forecast?" +
                 "latitude=" + latitude + "&longitude=" + longitude +
-                "&hourly=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch";
+                "&hourly=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&temperature_unit="
+                + temperatureUnit + "&wind_speed_unit=mph&precipitation_unit=inch";
 
         try {
             //Call the API for response
@@ -196,4 +202,22 @@ public class WeatherApp {
 
         return weatherCondition;
     }//end convertWeatherCode method
+
+    public String getUrlString(String temperatureMode){
+        if(Objects.equals(temperatureMode, "celsius")){
+            return "celsius";
+        }else {
+            return "fahrenheit";
+        }
+    }//end getUrlString method
+
+    // Set temperature unit globally (celsius or fahrenheit)
+    public static void setTemperatureUnit(String temperatureUnit) {
+        WeatherApp.temperatureUnit = temperatureUnit;
+    }
+
+    // Get the current temperature unit (celsius or fahrenheit)
+    public static String getTemperatureUnit() {
+        return WeatherApp.temperatureUnit;
+    }
 }//end WeatherApp class

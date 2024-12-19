@@ -11,6 +11,7 @@ import java.io.IOException;
 
 public class WeatherGUI extends JFrame{
     private JSONObject weatherData;
+    WeatherApp weatherApp = new WeatherApp();
 
     public WeatherGUI(){
         //Set frame of the GUI
@@ -26,6 +27,38 @@ public class WeatherGUI extends JFrame{
 
     private void addGUIItems() {
         //Add components to the GUI
+
+        //Add a menu bar
+
+        JMenuBar menuBar = new JMenuBar();
+        JMenu fileMenu = new JMenu("Settings");
+        JMenu editMenu = new JMenu("Temperature");
+        //Create menu items
+        JMenuItem celsius = new JMenuItem("Celsius");
+        JMenuItem fahrenheit = new JMenuItem("Fahrenheit");
+        JMenuItem exit =  new JMenuItem("Exit");
+        //Add to file menu
+        fileMenu.add(editMenu);
+        menuBar.add(fileMenu);
+        //Add to edit menu
+        editMenu.add(celsius);
+        editMenu.add(fahrenheit);
+        fileMenu.add(exit);
+        //Add action listeners
+        exit.addActionListener(e -> System.exit(0));
+        setVisible(true);
+        setJMenuBar(menuBar);
+        // Temperature Unit Listeners
+        celsius.addActionListener(e -> {
+            weatherApp.setTemperatureUnit("celsius");
+            updateTemperatureDisplay();
+        });
+
+        fahrenheit.addActionListener(e -> {
+            weatherApp.setTemperatureUnit("fahrenheit");
+            updateTemperatureDisplay();
+        });
+
 
         //Add search bar text field
         JTextField searchTextField = new JTextField();
@@ -114,7 +147,13 @@ public class WeatherGUI extends JFrame{
 
                 //Update temperature text
                 double temperature = (double) weatherData.get("temperature");
-                temperatureText.setText(temperature + "F");
+                if(weatherApp.getTemperatureUnit().equals("celsius")){
+                    temperatureText.setText(temperature + "C");
+                }
+                else{
+                    temperatureText.setText(temperature + "F");
+                }
+
 
                 //Update weather condition text
                 weatherConditionDescription.setText(weatherCondition);
@@ -145,4 +184,18 @@ public class WeatherGUI extends JFrame{
         System.out.println("Could not find resource.");
         return null;
     }//end loadImage method
+
+
+    private void updateTemperatureDisplay() {
+        if (weatherData != null) {
+            // Update the temperature and weather condition based on the fetched data
+            JLabel temperatureText = (JLabel) getComponentAt(0, 350); // getComponentAt will get the temperature label
+            JLabel weatherConditionDescription = (JLabel) getComponentAt(0, 405);
+            temperatureText.setText(weatherData.get("temperature").toString() + " " + weatherApp.getTemperatureUnit().toUpperCase());
+            weatherConditionDescription.setText(weatherData.get("weather_condition").toString());
+        }
+    }
+
+
+
 }//end WeatherGUI class
