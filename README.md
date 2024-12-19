@@ -12,3 +12,7 @@
   <li><a href="https://code.google.com/archive/p/json-simple/">JSON Simple</a>: Parser for JSON data</li>
   <li><a href="https://docs.oracle.com/javase/8/docs/api/java/net/HttpURLConnection.html">HTTPURLConnection</a>: Makes HTTP requests to get data from APIs</li>
 </ul>
+<h2>Updates</h2>
+<ul>
+  <li><strong>v1.0.1</strong>- Added the option for the user to select between Fahrenheit and Celsius</li>
+</ul>
