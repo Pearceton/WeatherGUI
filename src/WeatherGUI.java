@@ -32,17 +32,23 @@ public class WeatherGUI extends JFrame{
 
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("Settings");
-        JMenu editMenu = new JMenu("Temperature");
+        JMenu temperatureMenu = new JMenu("Temperature");
+        JMenu windspeedMenu = new JMenu("Wind Speed");
         //Create menu items
         JMenuItem celsius = new JMenuItem("Celsius");
         JMenuItem fahrenheit = new JMenuItem("Fahrenheit");
+        JMenuItem mph = new JMenuItem("MPH");
+        JMenuItem kmh = new JMenuItem("KMH");
         JMenuItem exit =  new JMenuItem("Exit");
         //Add to file menu
-        fileMenu.add(editMenu);
+        fileMenu.add(temperatureMenu);
+        fileMenu.add(windspeedMenu);
         menuBar.add(fileMenu);
         //Add to edit menu
-        editMenu.add(celsius);
-        editMenu.add(fahrenheit);
+        temperatureMenu.add(celsius);
+        temperatureMenu.add(fahrenheit);
+        windspeedMenu.add(mph);
+        windspeedMenu.add(kmh);
         fileMenu.add(exit);
         //Add action listeners
         exit.addActionListener(e -> System.exit(0));
@@ -57,6 +63,14 @@ public class WeatherGUI extends JFrame{
         fahrenheit.addActionListener(e -> {
             weatherApp.setTemperatureUnit("fahrenheit");
             updateTemperatureDisplay();
+        });
+        mph.addActionListener(e -> {
+            weatherApp.setWindspeedUnit("mph");
+            updateWindspeedDisplay();
+        });
+        kmh.addActionListener(e -> {
+            weatherApp.setWindspeedUnit("kmh");
+            updateWindspeedDisplay();
         });
 
 
@@ -103,9 +117,14 @@ public class WeatherGUI extends JFrame{
         add(windSpeedImage);
 
         //Add text for windspeed
-        JLabel windSpeedText = new JLabel("<html><b>Windspeed</b> 15mph</html>");//Set default for wind speed mph
-        windSpeedText.setBounds(310, 500, 85 ,55);
+        String windSpeedUnitText = weatherApp.getWindspeedUnit();
+        JLabel windspeedHeader = new JLabel("Windspeed");
+        windspeedHeader.setBounds(310, 490, 85 ,55);
+        windspeedHeader.setFont(new Font("Dialog", Font.BOLD, 16));
+        JLabel windSpeedText = new JLabel("15" + windSpeedUnitText);//Set default for wind speed mph
+        windSpeedText.setBounds(310, 510, 85 ,55);
         windSpeedText.setFont(new Font("Dialog", Font.PLAIN, 16));
+        add(windspeedHeader);
         add(windSpeedText);
 
         //Add search icon
@@ -164,7 +183,12 @@ public class WeatherGUI extends JFrame{
 
                 //Update windspeed text
                 double windspeed = (double) weatherData.get("windspeed");
-                windSpeedText.setText("<html><b>Windspeed</b> " + windspeed + "mph</html>");
+                if(weatherApp.getWindspeedUnit().equals("mph")){
+                    windSpeedText.setText(windspeed + "mph");
+                }
+                else{
+                    windSpeedText.setText(windspeed + "kmh");
+                }
             }
         });
         add(searchButton);
@@ -194,8 +218,15 @@ public class WeatherGUI extends JFrame{
             temperatureText.setText(weatherData.get("temperature").toString() + " " + weatherApp.getTemperatureUnit().toUpperCase());
             weatherConditionDescription.setText(weatherData.get("weather_condition").toString());
         }
-    }
+    }//end updateTemperatureDisplay
 
+    private void updateWindspeedDisplay() {
+        if(weatherData != null) {
+            JLabel windspeedText = (JLabel) getComponentAt(310, 500);
+            JLabel weatherConditionDescription = (JLabel) getComponentAt(0, 405);
+            windspeedText.setText(weatherData.get("windspeed").toString() + " " + weatherApp.getWindspeedUnit().toUpperCase());
+            weatherConditionDescription.setText(weatherData.get("weather_condition").toString());
+        }
+    }//end updateWindspeedDisplay
 
-
-}//end WeatherGUI class
+}//end WeatherGUI

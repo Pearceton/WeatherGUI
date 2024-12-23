@@ -13,6 +13,7 @@ import java.util.Scanner;
 public class WeatherApp {
 
     public static String temperatureUnit = "fahrenheit";
+    public static String windspeedUnit = "mph";
 
     //Get weather data for location given
     public static JSONObject getWeatherData(String locationName){
@@ -26,11 +27,12 @@ public class WeatherApp {
 
         String temperatureUnit = WeatherApp.temperatureUnit;
 
+
         //Build the API request using the location values
         String urlString = "https://api.open-meteo.com/v1/forecast?" +
                 "latitude=" + latitude + "&longitude=" + longitude +
                 "&hourly=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&temperature_unit="
-                + temperatureUnit + "&wind_speed_unit=mph&precipitation_unit=inch";
+                + temperatureUnit + "&wind_speed_unit=" + windspeedUnit + "&precipitation_unit=inch";
 
         try {
             //Call the API for response
@@ -203,21 +205,26 @@ public class WeatherApp {
         return weatherCondition;
     }//end convertWeatherCode method
 
-    public String getUrlString(String temperatureMode){
-        if(Objects.equals(temperatureMode, "celsius")){
-            return "celsius";
-        }else {
-            return "fahrenheit";
-        }
-    }//end getUrlString method
+
 
     // Set temperature unit globally (celsius or fahrenheit)
     public static void setTemperatureUnit(String temperatureUnit) {
         WeatherApp.temperatureUnit = temperatureUnit;
-    }
+    }//end setTemperatureUnit method
 
     // Get the current temperature unit (celsius or fahrenheit)
     public static String getTemperatureUnit() {
         return WeatherApp.temperatureUnit;
-    }
+    }//end getTemperatureUnit method
+
+    //Set windspeed unit globally (kmh or mph)
+    public static void setWindspeedUnit(String windspeedUnit) {
+        WeatherApp.windspeedUnit = windspeedUnit;
+    }//end setWindspeedUnit
+
+    //Get current windspeed unit (kmh or mph)
+    public static String getWindspeedUnit() {
+        return WeatherApp.windspeedUnit;
+    }//end getWindspeedUnit
+
 }//end WeatherApp class
