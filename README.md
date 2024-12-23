@@ -5,10 +5,14 @@
 </p>
 <h2>How It's Made</h2>
   <p>When program is launched, the user is prompted by a text field to enter in a location to get weather data for said location. A call to the location API is used to get the longitude and latitude coordinates
-  temperature (in farheinheit), humidity, and wind speed (in mph).</p>
+  temperature, humidity, and wind speed (in mph).</p>
 <h3>Technologies Used</h3>
 <ul>
   <li><a href="https://openjdk.org/projects/jdk/23/">Java 23</a>: Most recent version Java when program was written</li>
   <li><a href="https://code.google.com/archive/p/json-simple/">JSON Simple</a>: Parser for JSON data</li>
   <li><a href="https://docs.oracle.com/javase/8/docs/api/java/net/HttpURLConnection.html">HTTPURLConnection</a>: Makes HTTP requests to get data from APIs</li>
+</ul>
+<h2>Updates</h2>
+<ul>
+  <li><strong>v1.0.1</strong>- Added the option for the user to select between Fahrenheit and Celsius</li>
 </ul>
