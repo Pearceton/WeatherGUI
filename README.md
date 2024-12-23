@@ -5,7 +5,7 @@
 </p>
 <h2>How It's Made</h2>
   <p>When program is launched, the user is prompted by a text field to enter in a location to get weather data for said location. A call to the location API is used to get the longitude and latitude coordinates
-  temperature, humidity, and wind speed (in mph).</p>
+  temperature, humidity, and wind speed.</p>
 <h3>Technologies Used</h3>
 <ul>
   <li><a href="https://openjdk.org/projects/jdk/23/">Java 23</a>: Most recent version Java when program was written</li>
@@ -15,4 +15,5 @@
 <h2>Updates</h2>
 <ul>
   <li><strong>v1.0.1</strong>- Added the option for the user to select between Fahrenheit and Celsius</li>
+  <li><strong>v1.0.2.</strong>- Added the option for the user to select beween Mph and Kmh for windspeed</li>
 </ul>
