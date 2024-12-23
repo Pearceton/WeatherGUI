@@ -15,5 +15,5 @@
 <h2>Updates</h2>
 <ul>
   <li><strong>v1.0.1</strong>- Added the option for the user to select between Fahrenheit and Celsius</li>
-  <li><strong>v1.0.2.</strong>- Added the option for the user to select beween Mph and Kmh for windspeed</li>
+  <li><strong>v1.0.2</strong>- Added the option for the user to select beween Mph and Kmh for windspeed</li>
 </ul>
