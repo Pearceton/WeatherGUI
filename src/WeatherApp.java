@@ -31,7 +31,7 @@ public class WeatherApp {
         //Build the API request using the location values
         String urlString = "https://api.open-meteo.com/v1/forecast?" +
                 "latitude=" + latitude + "&longitude=" + longitude +
-                "&hourly=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&temperature_unit="
+                "&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,weather_code,wind_speed_10m&temperature_unit="
                 + temperatureUnit + "&wind_speed_unit=" + windspeedUnit + "&precipitation_unit=inch";
 
         try {
@@ -79,12 +79,17 @@ public class WeatherApp {
             JSONArray windspeedData = (JSONArray) hourly.get("wind_speed_10m");
             double windspeed = (double) windspeedData.get(index);
 
+            //Get precipitation chance
+            JSONArray precChance = (JSONArray) hourly.get("precipitation_probability");
+            long precPercent = (long) precChance.get(index);
+
             //Weather object that will be accessed in frontend
             JSONObject weatherData = new JSONObject();
             weatherData.put("temperature", temperature);
             weatherData.put("weather_condition", weatherCondition);
             weatherData.put("humidity", humidity);
             weatherData.put("windspeed", windspeed);
+            weatherData.put("precipitation_probability", precPercent);
 
             return weatherData;
 

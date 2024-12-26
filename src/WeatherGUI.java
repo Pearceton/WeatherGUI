@@ -17,7 +17,7 @@ public class WeatherGUI extends JFrame{
         //Set frame of the GUI
         super("Weather App");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(450, 650);
+        setSize(450, 750);
         setLocationRelativeTo(null);
         setLayout(null);
         setResizable(false);//Do not allow user to resize the GUI
@@ -127,6 +127,17 @@ public class WeatherGUI extends JFrame{
         add(windspeedHeader);
         add(windSpeedText);
 
+        //Add image for precipitation
+        JLabel precipitationImage = new JLabel(loadImage("src/assets/precipitation.png"));
+        precipitationImage.setBounds(0, 575, 70, 75);
+        add(precipitationImage);
+
+        //Add text for precipitation
+        JLabel precipitationText = new JLabel("<html><b>Precipitation</b> 100%</html>");
+        precipitationText.setBounds(90, 575, 95 ,55);
+        precipitationText.setFont(new Font("Dialog", Font.PLAIN, 16));
+        add(precipitationText);
+
         //Add search icon
         JButton searchButton = new JButton(loadImage("src/assets/search.png"));
         searchButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));//Change cursor to a hand when hovering over button
@@ -189,6 +200,10 @@ public class WeatherGUI extends JFrame{
                 else{
                     windSpeedText.setText(windspeed + "kmh");
                 }
+
+                //Update precipitation percentage
+                long precipiation = (long) weatherData.get("precipitation_probability");
+                precipitationText.setText("<html><b>Precipitation</b> " + precipiation + "%</html>");
             }
         });
         add(searchButton);
@@ -228,5 +243,7 @@ public class WeatherGUI extends JFrame{
             weatherConditionDescription.setText(weatherData.get("weather_condition").toString());
         }
     }//end updateWindspeedDisplay
+
+    //private void
 
 }//end WeatherGUI
