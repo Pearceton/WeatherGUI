@@ -17,4 +17,5 @@
   <li><strong>v1.0.1</strong>- Added the option for the user to select between Fahrenheit and Celsius</li>
   <li><strong>v1.0.2</strong>- Added the option for the user to select beween Mph and Kmh for windspeed</li>
   <li><strong>v1.0.3</strong>- Added precipitation percentage to the GUI</li>
+  <li><strong>v1.2.0</strong>- Added UV index and weather description text</li>
 </ul>
