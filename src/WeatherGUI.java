@@ -86,6 +86,10 @@ public class WeatherGUI extends JFrame{
         weatherConditionLabel.setBounds(0, 125, 450, 210);
         add(weatherConditionLabel);
 
+        //Add weather description
+        JLabel weatherDescriptionText = new JLabel("Cloudy");
+        weatherDescriptionText.setBounds(0, 225, 450, 210);
+
         //Add text for temperature
         JLabel temperatureText = new JLabel("60 F");//Set default for temperature to 60 degrees
         temperatureText.setBounds(0, 350, 450, 54);
@@ -138,6 +142,17 @@ public class WeatherGUI extends JFrame{
         precipitationText.setFont(new Font("Dialog", Font.PLAIN, 16));
         add(precipitationText);
 
+        //Add image for UV index
+        JLabel uvIndexImage = new JLabel(loadImage("src/assets/uvindex.png"));
+        uvIndexImage.setBounds(220, 575, 75, 75);
+        add(uvIndexImage);
+
+        //Add text for uv index
+        JLabel uvIndexText = new JLabel("<html><b>UV Index\n</b> 1</html>");
+        uvIndexText.setBounds(310, 575, 80 ,55);
+        uvIndexText.setFont(new Font("Dialog", Font.PLAIN, 16));
+        add(uvIndexText);
+
         //Add search icon
         JButton searchButton = new JButton(loadImage("src/assets/search.png"));
         searchButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));//Change cursor to a hand when hovering over button
@@ -163,15 +178,19 @@ public class WeatherGUI extends JFrame{
                 switch(weatherCondition){
                     case "Clear":
                         weatherConditionLabel.setIcon(loadImage("src/assets/clear.png"));
+                        weatherDescriptionText.setText("Clear");
                         break;
                     case "Cloudy":
                         weatherConditionLabel.setIcon(loadImage("src/assets/cloudy.png"));
+                        weatherDescriptionText.setText("Cloudy");
                         break;
                     case "Rain":
                         weatherConditionLabel.setIcon(loadImage("src/assets/rain.png"));
+                        weatherDescriptionText.setText("Rain");
                         break;
                     case "Snow":
                         weatherConditionLabel.setIcon(loadImage("src/assets/snow.png"));
+                        weatherDescriptionText.setText("Snow");
                         break;
                 }
 
@@ -204,6 +223,10 @@ public class WeatherGUI extends JFrame{
                 //Update precipitation percentage
                 long precipiation = (long) weatherData.get("precipitation_probability");
                 precipitationText.setText("<html><b>Precipitation</b> " + precipiation + "%</html>");
+
+                //Update UV index
+                double uvIndex = (double) weatherData.get("uv_index");
+                uvIndexText.setText("<html><b>UV Index\n</b>" + uvIndex + "</html>");
             }
         });
         add(searchButton);
